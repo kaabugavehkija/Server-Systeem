@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Sisselogimine</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" type = "text/css" href="projekt.css">
+</head>
+
+<body>	
+	<div style="top: 50%; left: 50%; position: absolute;">
+		<form method="post" action="?page=logi_sisse">
+			<table>
+				<tr>
+					<th>
+						<label for="username-id">Kasutajanimi:</label>
+					</th>
+					<td>
+						<input type="text" name="username" id="username-id" placeholder="Kasutajanimi">
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="password-id">Parool:</label>
+					</th>
+					<td>
+						<input type="password" name="password" id="password-id" placeholder="Parool">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label>
+							<input type="checkbox" name="remember_me" value="test"> Pea mind meeles
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button type="submit">Logi sisse</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div style="color:red;"><?php if(isset($_SESSION['error'])){
+		echo $_SESSION['error'];
+		unset($_SESSION['error']);
+		}
+	?>
+	</div>
+</body>
+</html>

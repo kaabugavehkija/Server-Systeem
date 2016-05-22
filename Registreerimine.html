@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Registreerimine</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" type = "text/css" href="projekt.css">
+</head>
+
+<body>
+    <form id = "rega" method="post" action="?page=registreeri">
+        <table>
+            <tr>
+                <th>
+                    <label for="username-id">
+                        Soovitud kasutajanimi:
+                    </label>
+                </th>
+                <td>
+                    <input type="text" name="username" id="username-id" placeholder="Kasutajanimi">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="password-id">Parool:</label>
+                </th>
+                <td>
+                    <input type="password" name="password" id="password-id" placeholder="Parool">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="password2-id">Korda parooli:</label>
+                </th>
+                <td>
+                    <input type="password" name="password2" id="password2-id" placeholder="Parool">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit">Registreeri</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+	<script src="pwkontroll.js"></script>
+</body>
+</html>
