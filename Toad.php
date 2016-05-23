@@ -16,7 +16,7 @@
 		<p>Sisse loginud kasutaja <?php echo $_SESSION['kasutaja1'];?></p>
 
 		<h1>Olemasolevad toad:</h1>
-		<p>kliki toanumbri peal täpsemate andmete saamiseks</p>
+		<p>Kliki toanumbri peal täpsemate andmete saamiseks</p>
 		<?php
 		require_once("funktsioonid.php");
 		baasi_yhendus();

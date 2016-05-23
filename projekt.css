@@ -22,6 +22,19 @@ input[type="text"],input[type="password"]{
 }
 form{
 	position:fixed;
-    top: 30%;
-    left: 30%;
+	top: 30%;
+	left: 30%
 }
+#error{
+	color: red;
+	text-align: center;
+	font-size: 150%;
+	position: fixed;
+	top:20%;
+	left:35%;
+}
+#pilt{
+	position: absolute;
+	top:200px;
+	left:10px;
+	}

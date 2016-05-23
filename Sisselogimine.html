@@ -8,7 +8,7 @@
 </head>
 
 <body>	
-	<div style="top: 50%; left: 50%; position: absolute;">
+	<div>
 		<form method="post" action="?page=logi_sisse">
 			<table>
 				<tr>
@@ -42,7 +42,7 @@
 			</table>
 		</form>
 	</div>
-	<div style="color:red;"><?php if(isset($_SESSION['error'])){
+	<div id="error"><?php if(isset($_SESSION['error'])){
 		echo $_SESSION['error'];
 		unset($_SESSION['error']);
 		}
