@@ -12,14 +12,21 @@ function baasi_yhendus(){
 
 function kysi_toad($ruumi_id){
 	global $link;
+	$stmt = mysqli_prepare($link, "SELECT * FROM mario_broneering WHERE ruumi_id= ? ORDER BY bronni_algus DESC");
+	$bind = mysqli_stmt_bind_param($stmt,"s", $ruumi_id);
+	$exce = mysqli_stmt_execute($stmt);//true v false
+	$veerud = array();
+	stmt_bind_assoc($stmt, $veerud);
 	$toad = array();
-	$sql="SELECT * FROM mario_broneering WHERE ruumi_id= ". $ruumi_id;
-	$result=mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
-	while($rida = mysqli_fetch_assoc($result)){
-		$toad[]=$rida;
+	while(mysqli_stmt_fetch($stmt)){
+		foreach( $veerud as $key=>$value ){
+			$row_tmb[ $key ] = $value;
+		} 
+		$toad[] = $row_tmb;
 	}
 	return $toad;
 }
+	
 function registreeri(){
 	if(isset($_POST['username'],$_POST['password'],$_POST['password2'])){
 		global $link;
@@ -47,8 +54,8 @@ function registreeri(){
 			}
 		}mysqli_close($link);
 		}	
-		}
 	}
+}
 
 function logi_sisse(){
 	if (isset($_POST['username'],$_POST['password'])) {
@@ -59,14 +66,11 @@ function logi_sisse(){
 		$bind = mysqli_stmt_bind_param($stmt,"ss", $username, $password);
 		$exce = mysqli_stmt_execute($stmt);//true v false
 		$bind_r = mysqli_stmt_bind_result($stmt,$r['kasutajanimi'], $r['parool'],$r['kasutaja_id']);
-		
 		if($exce && $stmt->fetch()){
-			//session_start();
 			session_regenerate_id();
 			$_SESSION['kasutaja1'] = $r['kasutajanimi'];
 			$_SESSION['kasutaja'] = $r['kasutaja_id'];
 			$nimi=$r['kasutajanimi'];
-			print_r($r);
 			header ('Location: Toad.php');
 			exit();
 		}else{
@@ -82,4 +86,57 @@ function logout(){
 	session_destroy();
 	header('Location: Systeem.php');
 }
+
+function stmt_bind_assoc (&$stmt, &$out) {
+    $data = mysqli_stmt_result_metadata($stmt);
+    $fields = array();
+    $out = array();
+    $fields[0] = $stmt;
+    $count = 1;
+    while($field = mysqli_fetch_field($data)) {
+        $fields[$count] = &$out[$field->name];
+        $count++;
+    }
+	call_user_func_array('mysqli_stmt_bind_result', $fields);
+}
+
+function tuba(){
+	global $link;
+	$ruumi_id = $_GET['ruumi_id'];
+	$stmt = mysqli_prepare($link,"SELECT ruumi_number FROM mario_ruumid WHERE ruumi_id= ?");
+	$bind = mysqli_stmt_bind_param($stmt,"s", $ruumi_id);
+	$exce = mysqli_stmt_execute($stmt);
+	$bind_r = mysqli_stmt_bind_result($stmt,$r['ruumi_number']);
+	while(mysqli_stmt_fetch($stmt)){
+		foreach($r as $toanr){
+			echo $toanr;}
+	}
+}
+function kirjeldus(){
+	global $link;
+	$ruumi_id = $_GET['ruumi_id'];
+	$stmt = mysqli_prepare($link,"SELECT kirjeldus FROM mario_ruumid WHERE ruumi_id= ?");
+	$bind = mysqli_stmt_bind_param($stmt,"s", $ruumi_id);
+	$exce = mysqli_stmt_execute($stmt);
+	$bind_r = mysqli_stmt_bind_result($stmt,$r['ruumi_number']);
+	while(mysqli_stmt_fetch($stmt)){
+		foreach($r as $kirjeldus){
+			echo $kirjeldus;}
+	}
+}
+
+function naita_tuba(){
+	global $link;
+	$user = "test";
+	$pass = "t3st3r123";
+	$db = "test";
+	$host = "localhost";
+	$link = mysqli_connect($host, $user, $pass, $db) or die("ei saanud ühendatud - ");
+	$sql = "SELECT * FROM mario_ruumid";
+	$result = mysqli_query($link, $sql);
+	$toad=array();
+		while($rida=mysqli_fetch_assoc($result)){
+			$toad[]=$rida;
+		}return $toad;
+	}
 ?>

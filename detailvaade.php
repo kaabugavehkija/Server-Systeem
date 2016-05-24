@@ -15,24 +15,12 @@ require_once("funktsioonid.php");
 ?>
 <h1>Tuba nr 
 <?php
-$ruumi_id = mysqli_real_escape_string($link, $_GET['ruumi_id']);
-$sql="SELECT ruumi_number FROM mario_ruumid WHERE ruumi_id= ".$ruumi_id;
-	$result=mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
-	while($rida = mysqli_fetch_assoc($result)){
-		foreach($rida as $toanr){
-			echo $toanr;}
-	}
+tuba();
 ?>
 </h1>
 <h2>Kirjeldus: 
 <?php 
-$ruumi_id = mysqli_real_escape_string($link, $_GET['ruumi_id']);
-$sql="SELECT kirjeldus FROM mario_ruumid WHERE ruumi_id= ".$ruumi_id;
-	$result=mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
-	while($rida = mysqli_fetch_assoc($result)){
-		foreach($rida as $kirjeldus){
-			echo $kirjeldus;}
-	}
+kirjeldus();
 ?>
 </h2>
 
@@ -40,7 +28,7 @@ $sql="SELECT kirjeldus FROM mario_ruumid WHERE ruumi_id= ".$ruumi_id;
 	require_once("funktsioonid.php");
 	baasi_yhendus();?>
 	<h2>Olemasolevad broneeringud</h2>
-	<?php $toad = kysi_toad($ruumi_id);?>
+	<?php $toad = kysi_toad($_GET['ruumi_id']);?>
 	<?php
 	foreach($toad as $tuba){?>
 		<table>
@@ -115,12 +103,8 @@ if (isset($_POST['algus'],$_POST['algus1'],$_POST['lopp'],$_POST['lopp1'])) {
 	$kp_lopp=mysqli_real_escape_string($link,$lopp1." ".$lopp);
 
 	$sql = "SELECT COUNT(*) as num FROM mario_broneering
-            WHERE
-            (
-            ('$kp_algus' <= bronni_algus AND '$kp_lopp' >= bronni_algus)
-            OR
-            ('$kp_algus' >= bronni_algus AND '$kp_lopp' <= bronni_lopp)
-            )
+            WHERE(('$kp_algus' <= bronni_algus AND '$kp_lopp' >= bronni_algus)
+            OR('$kp_algus' >= bronni_algus AND '$kp_lopp' <= bronni_lopp))
             AND ruumi_id = '$ruumi_ID'";
 	$result = mysqli_fetch_array(mysqli_query($link,$sql));
 	$ridu_kokku=$result['num'];
@@ -152,7 +136,7 @@ if (isset($_POST['algus'],$_POST['algus1'],$_POST['lopp'],$_POST['lopp1'])) {
 			echo "</br>";
 			echo "lõpp: ".$rida['bronni_lopp'];
 			//mysqli_close($link);
-	}
+		}
 	}
 }
 	
