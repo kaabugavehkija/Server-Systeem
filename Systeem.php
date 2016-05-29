@@ -25,6 +25,9 @@ switch($page){
 	case "logout":
 		logout();
 	break;
+	case "kustuta":
+		kustuta();
+	break;
 	default:
 		include("Avaleht.html");
 	break;

@@ -2,52 +2,65 @@
 <html>
 <head>
     <title>Tuba</title>
+	<link rel="stylesheet" type = "text/css" href="dv_toad.css">
     <meta charset="utf-8"/>
 </head>
 
 <body>
-
 <?php
 if(!isset($_SESSION['kasutaja1'])){ 
-    header("Location: Systeem.php?page=logi_sisse");  
+    header("Location: Systeem.php?page=logi_sisse"); 
+	var_dump($_GET['bronni_id']);
 }
 require_once("funktsioonid.php");
 ?>
-<h1>Tuba nr 
-<?php
-tuba();
-?>
+<h1>Tuba nr <?php tuba();?>
 </h1>
-<h2>Kirjeldus: 
-<?php 
-kirjeldus();
-?>
-</h2>
+<h2>Kirjeldus: <?php kirjeldus();?></h2>
 
 <?php
 	require_once("funktsioonid.php");
 	baasi_yhendus();?>
 	<h2>Olemasolevad broneeringud</h2>
 	<?php $toad = kysi_toad($_GET['ruumi_id']);?>
-	<?php
-	foreach($toad as $tuba){?>
-		<table>
-			<tr><td>bronni algus</td><td>bronni lõpp</td></tr>
-			<tr><td align ="center"><?php echo $tuba['bronni_algus'];?></td> <td align="center"><?php echo $tuba['bronni_lopp'];?></td></tr>
-		</table>
-		<?php	
-		echo "<br/>";
-	}?>
+		
+	<?php if ($_SESSION['roll']=='admin'){
+		echo "<table border='1' cellpadding='10'>";
+		echo "<tr><th>Bronni algus</th><th>Bronni lõpp</th><th>Kustuta</th></tr>";
+		foreach($toad as $tuba){
+		echo "<tr>";
+		echo "<td>".$tuba['bronni_algus']."</td>";
+		echo "<td>".$tuba['bronni_lopp']."</td>";?>
+		
+		<form method="POST" action="Systeem.php?page=kustuta&bronni_id='<?php echo $tuba['bronni_id'];?>'">
+			<td id="c"><input type="checkbox" name = "kp" value = "<?php echo $_GET['bronni_id']; ?>" /></td>
 			
+			<?php ;}?>
+			<tr><td colspan="3" align="right"><input type="submit" value="Kustuta valitud"></td></tr>
+			</table>
+			<br/>
+		</form>		
+	<?php ;}
+		else{
+		echo "<table border='1' cellpadding='10'>";
+			echo "<tr><th>bronni algus</th><th>bronni lõpp</th></tr>";
+			foreach($toad as $tuba){
+			echo "<tr>";
+			echo "<td>".$tuba['bronni_algus']."</td>";
+			echo "<td>".$tuba['bronni_lopp']."</td>";
+			}
+			}?>
+		</table>
+		
 	<h2>Lisa broneering</h2>
 	<form method="POST" action="">
 		<table>
 			<tr>
-				<td>bronni algus kuupäev</td>
-				<td>bronni algus kellaaeg</td>
+				<td>Bronni algus kuupäev</td>
+				<td>Bronni algus kellaaeg</td>
 				<td></td>
-				<td>bronni lõpp kellaaeg</td>
-				<td>bronni lõpp kuupäev</td>
+				<td>Bronni lõpp kellaaeg</td>
+				<td>Bronni lõpp kuupäev</td>
 				<td></td>
 			</tr>
 			<tr id="dates">
@@ -90,60 +103,28 @@ kirjeldus();
 		var dates = document.getElementById('dates');
 		var datepair = new Datepair(dates);
 	</script>
-
-<!--kuupäevade kattumiste kontroll-->
-<?php
-if (isset($_POST['algus'],$_POST['algus1'],$_POST['lopp'],$_POST['lopp1'])) {
-	$algus=htmlspecialchars($_POST['algus']);
-	$algus1=htmlspecialchars($_POST['algus1']);
-	$lopp=htmlspecialchars($_POST['lopp']);
-	$lopp1=htmlspecialchars($_POST['lopp1']);
-	$ruumi_ID=htmlspecialchars($_POST['ruum']);
-	$kp_algus=mysqli_real_escape_string($link,$algus." ".$algus1);
-	$kp_lopp=mysqli_real_escape_string($link,$lopp1." ".$lopp);
-
-	$sql = "SELECT COUNT(*) as num FROM mario_broneering
-            WHERE(('$kp_algus' <= bronni_algus AND '$kp_lopp' >= bronni_algus)
-            OR('$kp_algus' >= bronni_algus AND '$kp_lopp' <= bronni_lopp))
-            AND ruumi_id = '$ruumi_ID'";
-	$result = mysqli_fetch_array(mysqli_query($link,$sql));
-	$ridu_kokku=$result['num'];
-
-	if($ridu_kokku>0){
-		echo "Kontrolli aegu";
-		exit;
-		}
-	else{
-		baasi_yhendus();
-		$kp_algus=strtotime($algus.$algus1);
-		$kp_lopp=strtotime($lopp.$lopp1);
-
-		$kp_baasi_algus = date('Y-m-d H:i',$kp_algus);
-		$kp_baasi_lopp = date('Y-m-d H:i',$kp_lopp);
-
-		$sql = "INSERT INTO mario_broneering (ruumi_id, kasutaja_id, bronni_algus, bronni_lopp) VALUES(".$ruumi_ID.",".$_SESSION['kasutaja'].", '".$kp_baasi_algus."', '".$kp_baasi_lopp."')";
-		$result = mysqli_query($link, $sql);
-		//header("Location: Systeem.php?page=detailvaade&ruumi_id=".$_GET["ruumi_id"]);
-		?>
-		
-		<h2>Lisasite järgneva broneeringu</h2>
-		<?php
-		#kasutaja viimati lisatud broneering
-		$sql="SELECT bronni_algus, bronni_lopp FROM mario_broneering WHERE bronni_algus= '" .$kp_baasi_algus."' AND bronni_lopp= '" .$kp_baasi_lopp."' AND ruumi_id= '" .$ruumi_ID."' AND kasutaja_id= ".$_SESSION['kasutaja']."";
-		$result=mysqli_query($link, $sql) or die( $sql. " - ". mysqli_error($link));
-		while($rida = mysqli_fetch_assoc($result)){
-			echo "algus: ".$rida['bronni_algus'];
-			echo "</br>";
-			echo "lõpp: ".$rida['bronni_lopp'];
-			//mysqli_close($link);
-		}
-	}
-}
 	
-?>
-
-	<form action="Systeem.php?page=logout" method="POST">
-		<input type="submit" name="logout" value="Logi välja"/>
-	</form>
+		<!--väljalogimise nupp-->
+		<form id = "form1" action="Systeem.php?page=logout" method="POST">
+		</form>
+		<button class = "logout" type = "submit" form = "form1" value="Submit">Logi välja</button>
+		
+		<!--kuupäevade kattumiste kontroll-->
+		<?php
+		require_once("funktsioonid.php");
+		$ajad=kuupaevade_kattumine();?>
+				
+		<?php
+		if(!is_null($ajad)){
+		foreach($ajad as $aeg){?>
+		<h2>Lisasite järgneva broneeringu</h2>
+		<table border="1">
+			<tr><th>Bronni algus</th><th>Bronni lõpp</th></tr>
+			<tr><td><?php echo $aeg['bronni_algus'];?></td> <td align="center"><?php echo $aeg['bronni_lopp'];?></td></tr>
+		</table>
+		<?php	
+		echo "<br/>";
+		}
+	}?>
 </body>
 </html>
