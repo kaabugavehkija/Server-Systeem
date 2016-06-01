@@ -5,17 +5,20 @@
     <title>Avaleht</title>
     <meta charset="utf-8">
 	<link rel="stylesheet" type = "text/css" href="projekt.css">
-	<img id="pilt" src="Door.jpg" alt="uks" style="width:90px; height:212px;">
+	<!--http://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock-->
+	<script src="kell.js"></script>	
 </head>
-
-<body>
+<body onload="startTime()">
+<div id="kell"></div>
 	<h1>Tere tulemast ruumide broneerimise leheküljele</h1>
-	<h2>Jätkamiseks logi sisse või registreeru</h2>
-	<li>
-		<a href="?page=logi_sisse">Logi sisse</a>
-	</li>
-	<li>
+	<h2>Broneerimiseks logi sisse või registreeru</h2>
+	<div id="pilt">
+		<a href="?page=logi_sisse"><p id="login">Astu sisse</p>
+		<img src="Door.jpg" alt="uks">
+		</a>
+	</div>
+	<p id="edasi">
 		<a href="?page=registreeri">Registreeru</a>
-	</li>
+	</p>
 </body>
 </html>

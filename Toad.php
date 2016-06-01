@@ -17,21 +17,24 @@
 		<p>Sisse loginud kasutaja <?php echo $_SESSION['kasutaja1'];?></p>
 
 		<h1>Olemasolevad toad:</h1>
-		<p>Kliki toanumbri peal täpsemate andmete saamiseks</p>
+		<h2>Kliki toanumbri peal täpsemate andmete saamiseks</h2>
 		
 		<!--väljalogimise nupp-->
 		<form id = "form2" action="Systeem.php?page=logout" method="POST">
 		</form>
 		<button class = "logout" type = "submit" form = "form2" value="Submit">Logi välja</button>
 		
-		<p>
+		
 		<?php
 		require_once("funktsioonid.php");
 		$toad = naita_tuba();
+		
 		foreach($toad as $tuba){?>
+		<li>
 			<a href="Systeem.php?page=detailvaade&ruumi_id=<?php echo $tuba["ruumi_id"];?>">Tuba nr: <?php echo $tuba['ruumi_number'];?></a>
-			<?php echo '<br/>';	
+			
+			<?php echo '<br/>';		
 		}?>
-		</p>
+		</li>
 	</body>
 </html>

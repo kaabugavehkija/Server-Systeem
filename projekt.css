@@ -1,5 +1,6 @@
 body{
 	font-family: Arial, sans.serif;
+	margin-left: 50px;
 }
 
 table{
@@ -7,10 +8,12 @@ table{
 	border-spacing: 20px;
 	background-color: #f2f2f2
 }
+
 td, th {
 	padding: 5px 10px;
 	border-top: 1px solid #AAAAAA;
 }
+
 input[type="text"],input[type="password"]{
 	font-familiy: Arial, Sans-Serif;
 	font-size: 15px;
@@ -20,11 +23,13 @@ input[type="text"],input[type="password"]{
 	border-radius: 3px;
 	background-color:#ffffe0;
 }
+
 form{
 	position:fixed;
 	top: 30%;
 	left: 30%
 }
+
 #error{
 	color: red;
 	text-align: center;
@@ -33,8 +38,64 @@ form{
 	top:20%;
 	left:35%;
 }
-#pilt{
-	position: absolute;
-	top:200px;
-	left:10px;
+#pilt { 
+   position: relative; 
+   width: 100%;
+}
+
+#login{ 
+   position: absolute; 
+   top: 100px; 
+   left: 30px; 
+   width: 100%;
+   font-size: 22px;
+   font: bold;
+   color:white;
+}
+p{
+	font-size: 30px;
 	}
+
+p:hover {
+	font-size: 150%;
+	}
+	
+img{
+	width:180px; 
+	height:300px;
+}
+
+img:hover{
+	transform: scale(1.25);
+	transition: transform .25s ease;
+}
+
+h1 {
+    font-size: 36px;
+    line-height: 40px;
+}
+h2 {
+    font-size: 30px;
+    line-height: 40px;
+}
+#kell{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	font-size: 30px;
+	font-weight: 700;
+	border-style: groove;
+	border-color: darkred;
+}
+#id{
+	font-size: 30px;
+	color: red;
+}
+#vead{
+	color: red;
+	text-align: center;
+	font-size: 150%;
+	position: fixed;
+	top:20%;
+	left:35%;
+}
